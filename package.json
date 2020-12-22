@@ -30,6 +30,7 @@
       "react-app/jest"
     ]
   },
+  "homepage": "https://festive-shaw-09e360.netlify.app",
   "browserslist": {
     "production": [
       ">0.2%",
