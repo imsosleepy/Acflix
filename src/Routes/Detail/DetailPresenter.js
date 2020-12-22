@@ -1,6 +1,7 @@
 import React from "react";
 import Proptypes from "prop-types";
 import styled from "styled-components"
+import Helmet from "react-helmet"
 import Loader from "../../Components/Loader"
 
 const Container = styled.div`
@@ -72,8 +73,15 @@ width: 50%;
 `;
 
 const DetailPresenter = ({ result, loading, error }) => 
-loading ? <Loader /> :
+loading ? 
+<>
+<title> Loading | Normfilx </title>
+<Loader /> 
+</>:
 <Container>
+    <Helmet><title>{result.original_title
+              ? result.original_title
+              : result.original_name}{" "} | Normfilx</title></Helmet>
     <Backdrop
         bgImage={`https://image.tmdb.org/t/p/original${result.backdrop_path}`}
       />
