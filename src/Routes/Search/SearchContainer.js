@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { moviesApi, tvApi } from '../../api';
-import Helmet from "react-helmet";
 import SearchPresenter from "./SearchPresenter";
 
 export default class extends React.Component {

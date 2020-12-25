@@ -8,6 +8,7 @@ export default class extends React.Component{
         const {location: {pathname}} = props;
         this.state = {
             result: null,
+            external: null,
             loading: true,
             error: null,
             isMovie: pathname.includes("/movie/")
@@ -29,24 +30,29 @@ export default class extends React.Component{
       }
 
       let result = null;
+      let external = null;
       try{
         if(isMovie){
             ({data: result} = await moviesApi.movieDetail(parseId));
+            ({data: external} = await moviesApi.getExternal(parseId));
         } else {
             ({data: result} = await tvApi.showDetail(parseId));
+            ({data: external} = await tvApi.getExternal(parseId));
         }
+        console.log(result);
       } catch {
         this.setState({error: "Can't find anything."});
       } finally {
-        this.setState({loading:false, result});
+        this.setState({loading:false, result, external});
       }
       
     }
 
     render() {
-        const { result , error, loading } = this.state;
+        const { result , external, error, loading } = this.state;
         return (<DetailPresenter 
         result={result}
+        external= {external}
         error={error}
         loading={loading}
         />

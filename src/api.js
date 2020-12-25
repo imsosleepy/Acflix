@@ -18,6 +18,7 @@ export const moviesApi = {
             append_to_response: "videos"
         }
     }),
+    getExternal: (id) => api.get(`movie/${id}/external_ids`),
     search: term => 
         api.get("search/movie", {
         params:{
@@ -34,8 +35,10 @@ export const tvApi = {
     showDetail: (id) => api.get(`tv/${id}`, {
         params:{
             append_to_response: "videos"
-        }
+        },
+    
     }),
+    getExternal: (id) => api.get(`tv/${id}/external_ids`),
     search: term => 
         api.get("search/tv", {
         params:{
