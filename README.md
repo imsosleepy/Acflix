@@ -28,4 +28,4 @@ https://www.npmjs.com/package/react-responsive-carousel?__cf_chl_captcha_tk__=2d
 
 - Carousel로 변경
 - Section 재구현
-- Seasons 마무리
+- Seasons 마무리 

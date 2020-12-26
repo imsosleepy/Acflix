@@ -5,8 +5,8 @@ import Helmet from "react-helmet"
 import Loader from "../../Components/Loader"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import Section from "../../Components/Section";
-import Poster from "../../Components/Poster";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const Container = styled.div`
     height: calc(100vh - 50px);
@@ -91,7 +91,42 @@ const VideoContainer = styled.div`
 const VideoTitle = styled.div`
     font-size: 30px;
     margin-top: 20px;
+    margin-bottom: 20px;
 `;
+
+const SeasonContainer = styled.div`
+    width: 100%;
+    height: 80px;
+`;
+
+const SeasonTitle = styled.div`
+    font-size: 30px;
+    margin-bottom: 20px;
+`;
+
+const CaruselItem = styled.div`
+
+`;
+
+const SeasonImageContainer = styled.div`
+    flex-direction: column;
+    display:flex;
+`;
+
+const SeasonImage = styled.div`
+    background-image: url(${props => props.bgUrl});
+    height: 300px;
+    background-size:cover;
+    border-radius: 4px;
+    background-position: center center;
+    transition: opacity 0.1s linear;
+`;
+
+const SeasonImageTitle = styled.span`
+    display:block;
+    margin-bottom: 3px;
+`;
+
 
 const Iframe = styled.iframe`
     margin-top: 20px;
@@ -100,26 +135,11 @@ const Iframe = styled.iframe`
 const TabContainer = styled.div`
     margin-top: 20px;
 `
-const ImageContainer = styled.div`
-    margin-bottom: 5px;
-`;
-
-const Image = styled.div`
-    float: left;
-    margin-left: 5px;
-    background-image: url(${props => props.bgUrl});
-    width: 300px;
-    height: 150px;
-    object-fit: contain;
-    background-repeat: no-repeat;
-    border-radius: 4px;
-    background-position: center center;
-`;
-
 
 const Country = styled.li`
   font-size: 22px;
 `;
+
 
 const DetailPresenter = ({ result, external, loading, error }) => 
 loading ? 
@@ -165,58 +185,42 @@ loading ?
         </ItemContainer>
         <Overview>{result.overview}</Overview>
         <VideoContainer>
-        <VideoTitle>Videos</VideoTitle>
+        <VideoTitle>All {result.videos.results.length} Videos</VideoTitle>
+        <Carousel width="600px"infiniteLoop showIndicators={false} showStatus={false} dynamicHeight>
         {result.videos.results &&
                   result.videos.results.map((video, index) => (
-                    <Iframe
+                      <Iframe
                       key={index}
                       width="600"
                       height="360"
-                      src={`https://www.youtube.com/embed/${video.key}`}
+                      src={video.key ? `https://www.youtube.com/embed/${video.key}` : require("../../assets/noPosterSmall.png")}
                       frameborder="0"
                     ></Iframe>
-                  ))}
+                    ))} 
+        </Carousel>
         </VideoContainer>
-        {result.seasons && result.seasons.length > 0 && <Section title="Seasons">
-            {result.seasons.map((season) => {
-                console.log(season);
-                <Poster 
-                key= {season.id} 
-                id = {season.id} 
-                title = {season.name} 
-                imageUrl={season.poster_path}
-                year={season.air_date && season.air_date.substring(0,4)}
-                isMovie={false}
-                />
-            })
-            }
-            </Section>}
-        <TabContainer>
-        <Tabs>
-            <TabList>
-                <Tab>Production Companies</Tab>
-                <Tab>Production Countries</Tab>
-            </TabList>
+        
+        <SeasonContainer>
+            <SeasonTitle> All {result.seasons.length + 1} Seasons </SeasonTitle>
+            
+            {console.log(result.seasons)}
+            {result.seasons && result.seasons.length > 0 && <Carousel width="200px" infiniteLoop showIndicators={false} showStatus={false} dynamicHeight autoPlay>
+                {
+                result.seasons.map((season, index) => <CaruselItem key ={index}>
+                    <SeasonImageContainer>
+                    <SeasonImage bgUrl = {season.poster_path ? `https://image.tmdb.org/t/p/original${season.poster_path}` : require("../../assets/noPosterSmall.png") }/>
+                    <SeasonImageTitle>{season.name}</SeasonImageTitle>
+                    </SeasonImageContainer> 
+                </CaruselItem>
+                )}
+            
+            
+            </Carousel>}
+        
+        
+        </SeasonContainer>
 
-            <TabPanel>
-                {result.production_companies.map(company => 
-                <ImageContainer key= {company.id}>
-                <Image bgUrl={company.logo_path ? `https://image.tmdb.org/t/p/w300${company.logo_path}` : require("../../assets/noPosterSmall.png")} />
-                {/* <Title>{company.name > 18 ? `${company.name(0, 18)}...` : company.name}</Title> */}
-              </ImageContainer>)
-               }
-            </TabPanel>
-            <TabPanel>
-            {result.production_countries
-                    ? result.production_countries.map((country, index) => (
-                        <Country key={index}> {country.name}</Country>
-                      ))
-                    : result.origin_country.map((country, index) => (
-                        <Country key={index}> {country}</Country>
-                      ))}
-            </TabPanel>
-        </Tabs>
-        </TabContainer>
+        
     </Data>
     </Content>
     

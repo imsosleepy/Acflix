@@ -39,7 +39,6 @@ export default class extends React.Component{
             ({data: result} = await tvApi.showDetail(parseId));
             ({data: external} = await tvApi.getExternal(parseId));
         }
-        console.log(result);
       } catch {
         this.setState({error: "Can't find anything."});
       } finally {
