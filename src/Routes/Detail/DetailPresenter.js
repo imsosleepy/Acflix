@@ -96,7 +96,6 @@ const VideoTitle = styled.div`
 
 const SeasonContainer = styled.div`
     width: 100%;
-    height: 80px;
 `;
 
 const SeasonTitle = styled.div`
@@ -119,7 +118,6 @@ const SeasonImage = styled.div`
     background-size:cover;
     border-radius: 4px;
     background-position: center center;
-    transition: opacity 0.1s linear;
 `;
 
 const SeasonImageTitle = styled.span`
@@ -132,8 +130,25 @@ const Iframe = styled.iframe`
     margin-top: 20px;
 `;
 
+const ImageContainer = styled.div`
+    margin-bottom: 5px;
+`;
+
+const Image = styled.div`
+    background-image: url(${props => props.bgUrl});
+    width: 400px;
+    height: 150px;
+    background-size: 100% 100%;
+    border-radius: 4px;
+    background-position: center center;
+
+`;
+
 const TabContainer = styled.div`
     margin-top: 20px;
+`
+const Company = styled.div`
+    font-size: 20px;
 `
 
 const Country = styled.li`
@@ -201,9 +216,7 @@ loading ?
         </VideoContainer>
         
         <SeasonContainer>
-            <SeasonTitle> All {result.seasons.length + 1} Seasons </SeasonTitle>
-            
-            {console.log(result.seasons)}
+            <SeasonTitle> All {result.seasons.length} Seasons </SeasonTitle>
             {result.seasons && result.seasons.length > 0 && <Carousel width="200px" infiniteLoop showIndicators={false} showStatus={false} dynamicHeight autoPlay>
                 {
                 result.seasons.map((season, index) => <CaruselItem key ={index}>
@@ -213,12 +226,39 @@ loading ?
                     </SeasonImageContainer> 
                 </CaruselItem>
                 )}
-            
-            
             </Carousel>}
-        
-        
         </SeasonContainer>
+
+        <TabContainer>
+        <Tabs>
+            <TabList>
+                <Tab>Production Companies</Tab>
+                <Tab>Production Countries</Tab>
+            </TabList>
+
+            <TabPanel> 
+            <Company>All {result.production_companies.length} companies </Company>
+            {result.production_companies && result.production_companies.length > 0 && <Carousel width="400px" infiniteLoop showIndicators={false} showStatus={false} dynamicHeight autoPlay>
+                {
+                result.production_companies.map(company => 
+                <ImageContainer key= {company.id}>
+                <Image bgUrl={company.logo_path ? `https://image.tmdb.org/t/p/w300${company.logo_path}` : require("../../assets/noPosterSmall.png")} />
+              </ImageContainer>)
+               }
+               
+            </Carousel>}
+            </TabPanel>
+            <TabPanel>
+            {result.production_countries
+                    ? result.production_countries.map((country, index) => (
+                        <Country key={index}> {country.name}</Country>
+                      ))
+                    : result.origin_country.map((country, index) => (
+                        <Country key={index}> {country}</Country>
+                      ))}
+            </TabPanel>
+        </Tabs>
+        </TabContainer>
     </Data>
     </Content>
     
