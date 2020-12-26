@@ -219,8 +219,6 @@ loading ?
         
         
         </SeasonContainer>
-
-        
     </Data>
     </Content>
     
