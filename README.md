@@ -31,6 +31,7 @@ start 2020. 12. 10
 
 ## 더 해야할 것
 
+- need movie page bug fix
 - Hooks로 변경
 - Home에도 Carousel 적용
 - search 페이지
